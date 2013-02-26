@@ -2,11 +2,11 @@ require 'net/http'
 require 'net/https'
 
 module Gattica
-  
+
   # Authenticates a user against the Google Client Login system
-  
+
   class Auth
-    
+
     include Convertible
 
     SCRIPT_NAME = '/accounts/ClientLogin'
@@ -14,12 +14,12 @@ module Gattica
     OPTIONS = { :source => 'gattica', :service => 'analytics' }                                    # Google asks that you provide the name of your app as a 'source' parameter in your POST
 
     attr_reader :tokens
-  
+
     # Try to authenticate the user
     def initialize(http, user)
       options = OPTIONS.merge(user.to_h)
       options.extend HashExtensions
-      
+
       response, data = http.post(SCRIPT_NAME, options.to_query, HEADERS)
       if response.code != '200'
         case response.code
@@ -29,18 +29,19 @@ module Gattica
           raise GatticaError::UnknownAnalyticsError, response.body + " (status code: #{response.code})"
         end
       end
+      data = response.body if RUBY_VERSION == '1.9.3'
       @tokens = parse_tokens(data)
     end
-  
-  
+
+
     private
-    
+
     # Parse the authentication tokens out of the response and makes them available as a hash
     #
     # tokens[:auth] => Google requires this for every request (added to HTTP headers on GET requests)
     # tokens[:sid]  => Not used
     # tokens[:lsid] => Not used
-    
+
     def parse_tokens(data)
       tokens = {}
       data.split("\n").each do |t|
@@ -48,6 +49,6 @@ module Gattica
       end
       return tokens
     end
-  
+
   end
 end

@@ -158,6 +158,7 @@ module Gattica
         end
       end
 
+      data = response.body if RUBY_VERSION == '1.9.3'
       return data
     end
 
