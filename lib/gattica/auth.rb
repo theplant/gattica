@@ -21,6 +21,8 @@ module Gattica
       options.extend HashExtensions
 
       response, data = http.post(SCRIPT_NAME, options.to_query, HEADERS)
+      data ||= response.body
+
       if response.code != '200'
         case response.code
         when '403'
@@ -29,7 +31,6 @@ module Gattica
           raise GatticaError::UnknownAnalyticsError, response.body + " (status code: #{response.code})"
         end
       end
-      data = response.body if RUBY_VERSION == '1.9.3'
       @tokens = parse_tokens(data)
     end
 

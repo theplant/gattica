@@ -22,3 +22,5 @@ Rake::TestTask.new do |t|
   t.pattern = 'test/**/test_*.rb'
   t.verbose = false
 end
+
+$LOAD_PATH.unshift(File.dirname(__FILE__))
