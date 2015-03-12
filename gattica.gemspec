@@ -4,6 +4,8 @@
 # -*- encoding: utf-8 -*-
 require 'rubygems'
 $:.push File.expand_path('../lib', __FILE__)
+puts $:
+require 'gattica'
 Gem::Specification.new do |s|
   s.name = %q{gattica}
   s.version = "0.5.1"
@@ -44,7 +46,7 @@ Gem::Specification.new do |s|
     "test/test_user.rb"
   ]
   s.homepage = %q{http://github.com/chrisle/gattica}
-  s.require_paths = [%q{lib}]
+  s.require_paths = ['lib']
   s.rubygems_version = %q{1.8.4}
   s.summary = %q{Gattica is a easy to use Ruby Gem for getting data from the Google Analytics API.}
 
