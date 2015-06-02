@@ -2,6 +2,7 @@ module GatticaError
   # user errors
   class InvalidEmail < StandardError; end;
   class InvalidPassword < StandardError; end;
+  class InvalidPkcs12Path < StandardError; end;
   # authentication errors
   class CouldNotAuthenticate < StandardError; end;
   class NoLoginOrToken < StandardError; end;

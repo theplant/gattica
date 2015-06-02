@@ -16,6 +16,7 @@ module Gattica
     # +:profile_id+::   Use this Google Analytics profile_id (default is nil)
     # +:timeout+::      Set Net:HTTP timeout in seconds (default is 300)
     # +:token+::        Use an authentication token you received before
+    # +:pkcs12_path+::  The file path of PKCS12 that using for google Oauth2 login
     def initialize(options={})
       @options = Settings::DEFAULT_OPTIONS.merge(options)
       handle_init_options(@options)
@@ -166,7 +167,7 @@ module Gattica
     # Sets up the HTTP headers that Google expects (this is called any time @token is set either by Gattica
     # or manually by the user since the header must include the token)
     def set_http_headers
-      @headers['Authorization'] = "GoogleLogin auth=#{@token}"
+      @headers['Authorization'] = "Bearer #{@token}"
       @headers['GData-Version']= '2'
     end
 
@@ -269,7 +270,10 @@ module Gattica
     # If the authorization is a email and password then create User objects
     # or if it's a previous token, use that.  Else, raise exception.
     def check_init_auth_requirements
-      if ((defined? @options[:email]) && (defined? @options[:password]))
+      if ((defined? @options[:email]) && (defined? @options[:pkcs12_path]))
+        @asserter = Asserter.new(@options[:email], @options[:pkcs12_path])
+        self.token = @asserter.access_token
+      elsif ((defined? @options[:email]) && (defined? @options[:password]))
         @user = User.new(@options[:email], @options[:password])
         @auth = Auth.new(@http, user)
         self.token = @auth.tokens[:auth]

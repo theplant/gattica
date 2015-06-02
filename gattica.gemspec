@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "gattica.gemspec",
     "lib/gattica.rb",
     "lib/gattica/account.rb",
+    "lib/gattica/asserter.rb",
     "lib/gattica/auth.rb",
     "lib/gattica/convertible.rb",
     "lib/gattica/data_point.rb",
@@ -55,15 +56,18 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<gattica>, [">= 0"])
       s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_runtime_dependency(%q<hpricot>, [">= 0"])
+      s.add_runtime_dependency(%q<google-api-client>, ["~> 0.7.1"])
     else
       s.add_dependency(%q<gattica>, [">= 0"])
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<hpricot>, [">= 0"])
+      s.add_dependency(%q<google-api-client>, ["~> 0.7.1"])
     end
   else
     s.add_dependency(%q<gattica>, [">= 0"])
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<hpricot>, [">= 0"])
+    s.add_dependency(%q<google-api-client>, ["~> 0.7.1"])
   end
 end
 
