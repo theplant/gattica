@@ -26,7 +26,7 @@ require 'gattica/asserter'
 # Please see the README for usage docs.
 module Gattica
 
-  VERSION = '0.5.1'
+  VERSION = '0.5.1.1'
 
   # Creates a new instance of Gattica::Engine
   def self.new(*args)
