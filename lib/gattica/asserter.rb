@@ -1,3 +1,5 @@
+require 'google/api_client'
+
 module Gattica
 
   # Represents a user to be authenticated by GA
