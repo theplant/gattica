@@ -14,11 +14,19 @@ module Gattica
     end
 
     def access_token
-      @access_token ||= begin
-        key = ::Google::APIClient::PKCS12.load_key(pkcs12_path, 'notasecret')
-        asserter = ::Google::APIClient::JWTAsserter.new(email, 'https://www.googleapis.com/auth/analytics', key)
-        asserter.authorize.access_token
-      end
+      @access_token ||= fetch_access_token
+    end
+
+    def refresh_access_token!
+      new_token = fetch_access_token
+      puts "Gattica::Asserter#refresh_access_token! -> #{Time.now}\n #{new_token}"
+      @access_token = new_token
+    end
+
+    def fetch_access_token
+      key = ::Google::APIClient::PKCS12.load_key(pkcs12_path, 'notasecret')
+      asserter = ::Google::APIClient::JWTAsserter.new(email, 'https://www.googleapis.com/auth/analytics', key)
+      asserter.authorize.access_token
     end
 
     private

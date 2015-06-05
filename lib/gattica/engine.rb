@@ -130,6 +130,15 @@ module Gattica
       set_http_headers
     end
 
+    def try_refresh_token
+      if @asserter
+        @asserter.refresh_access_token!
+        self.token = @asserter.access_token
+      else
+        raise GatticaError::InvalidToken, "Your authorization token is invalid or has expired (status code: 401)"
+      end
+    end
+
     ######################################################################
     private
 
@@ -153,7 +162,8 @@ module Gattica
         when '400'
           raise GatticaError::AnalyticsError, response.body + " (status code: #{response.code})"
         when '401'
-          raise GatticaError::InvalidToken, "Your authorization token is invalid or has expired (status code: #{response.code})"
+          try_refresh_token
+          return do_http_get(query_string)
         else  # some other unknown error
           raise GatticaError::UnknownAnalyticsError, response.body + " (status code: #{response.code})"
         end
